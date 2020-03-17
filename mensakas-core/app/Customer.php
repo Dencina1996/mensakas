@@ -42,4 +42,18 @@ class Customer extends Model
     {
         return $this->hasOne('App\CustomerAddress');
     }
+
+    public function scopeFilter($query, $params) {
+        if (isset($params['search']) && trim($params['search'] !== '')) {
+            $columns = $this->fillable;
+            foreach ($columns as $key => $column) {
+                if ($key === array_key_first($columns)) {
+                    $query->where($column, 'LIKE', '%' . $params['search'] . '%');
+                } else {
+                    $query->orWhere($column, 'LIKE', '%' . $params['search'] . '%');
+                }
+            }
+        }
+        return $query;
+    }
 }

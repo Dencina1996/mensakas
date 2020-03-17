@@ -1,12 +1,33 @@
 @extends('layouts.app')
 
+@push('styles')
+<link href="{{ asset('css/filterTable.css') }}" rel="stylesheet">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto|Varela+Round">
+<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+@endpush
+
 @section('space')
     @include('layouts.secondNav', ['title' => 'Customers'])
 @endsection
 
 @section('content')
 <div class="table d-flex justify-content-center">
-    <div class="">
+    <div class="table-wrapper">
+        <div class="table-filter">
+            <div class="row">
+                <div class="col-sm-3"> </div>
+                <div class="col-sm-9">
+                    <form action="" method="get">
+                        <button type="submit" class="btn btn-primary"><i class="fa fa-search"></i></button>
+                        <div class="filter-group">
+                            <label>Search</label>
+                            <input type="text" class="form-control" name="search">
+                        </div>
+                        <span class="filter-icon"><i class="fa fa-filter"></i></span>
+                    </form>
+                </div>
+            </div>
+        </div>
         <table>
             <tr>
             <td></td>

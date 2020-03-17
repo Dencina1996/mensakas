@@ -13,12 +13,14 @@ class CustomerController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $customers = Customer::all();
+        $params = $request->except('_token');
+
+        $customers = Customer::filter($params)->get();
 
         return view('customers.index')
-            ->with('customers', $customers);
+            ->with('customers', $customers);     
     }
 
     /**
