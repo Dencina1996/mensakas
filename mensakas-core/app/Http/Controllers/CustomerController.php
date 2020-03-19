@@ -124,4 +124,13 @@ class CustomerController extends Controller
         $customer->delete();
         return redirect(route('customers.index'))->with('success', 'Customer removed successfully!');
     }
+
+    public function usersList() {
+        /*
+        return DB::table('customers')
+        ->join('customer_address', 'customer_address.customer_id', '=', 'customers.id')
+        ->select('customers.*', 'customer_address');
+        */
+        return Customer::with('customerAddresse')->get();
+    }
 }
