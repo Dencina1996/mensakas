@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Customer;
 use App\CustomerAddress;
 use Illuminate\Http\Request;
+use DB;
 
 class CustomerController extends Controller
 {
@@ -125,12 +126,26 @@ class CustomerController extends Controller
         return redirect(route('customers.index'))->with('success', 'Customer removed successfully!');
     }
 
-    public function usersList() {
-        /*
-        return DB::table('customers')
-        ->join('customer_address', 'customer_address.customer_id', '=', 'customers.id')
-        ->select('customers.*', 'customer_address');
-        */
-        return Customer::with('customerAddresse')->get();
+    // API 
+
+    public function usersList()
+    {
+        return Customer::join('customer_address', 'customer_address.customer_id', '=', 'customer.id')->get();
+    }
+
+    public function userListFiltered($params)
+    {
+        return Customer::join('customer_address', 'customer_address.customer_id', '=', 'customer.id')
+        ->where('first_name', 'like', '%'.$params.'%')
+        ->orWhere('last_name', 'like', '%'.$params.'%')
+        ->orWhere('phone', 'like', '%'.$params.'%')
+        ->orWhere('street', 'like', '%'.$params.'%')
+        ->orWhere('city', 'like', '%'.$params.'%')
+        ->get();
+    }
+
+    public function userDetails($id)
+    {
+        return Customer::join('customer_address', 'customer_address.customer_id', '=', 'customer.id')->where('customer.id', '=', $id)->first();
     }
 }

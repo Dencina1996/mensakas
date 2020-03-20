@@ -86,4 +86,8 @@ Route::patch('simulator/restaurants/{business}/order/{order}', 'Simulator\Restau
 
 // API USERS
 
-Route::get('api/users/users_list', 'CustomerController@usersList');
+Route::get('api/users/list', 'CustomerController@usersList');
+
+Route::get('api/users/list/search={params}', 'CustomerController@userListFiltered');
+
+Route::get('api/users/{id}', 'CustomerController@userDetails');
