@@ -8,11 +8,8 @@
   src="https://code.jquery.com/jquery-3.4.1.js"
   integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="
   crossorigin="anonymous"></script>
+  <script type="text/javascript" src="/js/customerIndex.js"></script>
 @endpush
-
-@section('script')
-    <script src="{{ asset('/js/customerIndex.js') }} " defer></script>
-@endsection
 
 @section('space')
     @include('layouts.secondNav', ['title' => 'Customers'])
@@ -52,6 +49,4 @@
         </table>
     </div>
 </div>
-
-
 @endsection

@@ -148,4 +148,15 @@ class CustomerController extends Controller
     {
         return Customer::join('customer_address', 'customer_address.customer_id', '=', 'customer.id')->where('customer.id', '=', $id)->first();
     }
+
+    public function businessesNearBy($id) {
+        return DB::table('business')
+        ->join('business_address', 'business_address.business_id', '=', 'business.id')
+        ->join('customer_address', 'customer_address.zip_code', '=', 'business_address.zip_code')
+        ->join('customer', 'customer.id', '=', 'customer_address.customer_id')
+        ->where('customer.id', '=', $id)
+        ->select('business.*')
+        ->get()
+        ->toJson();
+    }
 }

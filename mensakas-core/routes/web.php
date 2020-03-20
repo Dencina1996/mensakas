@@ -91,3 +91,5 @@ Route::get('api/users/list', 'CustomerController@usersList');
 Route::get('api/users/list/search={params}', 'CustomerController@userListFiltered');
 
 Route::get('api/users/{id}', 'CustomerController@userDetails');
+
+Route::get('api/users/{id}/nearby', 'CustomerController@businessesNearBy');
