@@ -28,7 +28,7 @@ function tableContent(url) {
 
             // ROW 
 
-                $(document.createElement('tr')).appendTo('table');
+                $(document.createElement('tr')).attr('customer_id', val.id).appendTo('table');
 
                 // CUSTOMER (ALL DETAILS)
 
@@ -64,11 +64,11 @@ function tableContent(url) {
 
                     $(document.createElement('button')).attr({
                         class: 'btn btn-danger',
-                        onclick: 'customerModal('+val.id+', "update")'
+                        onclick: 'deleteModal('+val.id+')'
                     }).append($(document.createElement('i')).addClass('fa fa-trash')).append(' Delete').appendTo('tr:last-child td:last-child');                   
                     $(document.createElement('button')).attr({
                         class: 'btn btn-warning',
-                        onclick: 'alert("EDIT")'
+                        onclick: 'customerModal('+val.id+', "update")'
                     }).append($(document.createElement('i')).addClass('fa fa-pencil')).append(' Edit').appendTo('tr:last-child td:last-child');   
 
         });
@@ -262,4 +262,69 @@ function customerModal(id, opt) {
 		$('.form-group input').attr('disabled', 'true');
 		$('button:contains("Update")').remove();
 	}	
+}
+
+function deleteCustomer(id) {
+	$.post('/customers/delete/'+id, {_token: $('input[name="_token"]').val()})
+		.done( function() {
+			$('.modal-body p').text('Record deleted successfully ✅');
+			$('.modal-footer button:contains("Delete")').remove();
+			$('tr[customer_id="'+id+'"]').remove();
+		})
+		.fail( function(status) {
+			$('.modal-body p').text('Record cannot be deleted (Error '+status.status+') ❌');
+		});
+}
+
+function deleteModal(id) {
+
+	$(document.createElement('div')).attr({
+			'class': 'modal fade',
+			'id': 'userModal',
+			'tabindex': '-1',
+			'role': 'dialog',
+			'aria-labelledby': 'modalLabel',
+			'aria-hidden': 'true'
+		}).appendTo('body');
+
+		// MODAL DIALOG
+
+			$(document.createElement('div')).attr({
+				'class': 'modal-dialog',
+				'role': 'document'
+			}).appendTo('.modal');
+
+			// MODAL CONTENT
+
+				$(document.createElement('div')).addClass('modal-content').appendTo('.modal-dialog');
+
+				// MODAL HEADER
+
+					$(document.createElement('div')).addClass('modal-header')
+					.append($(document.createElement('h5')).attr({
+						'class': 'modal-title',
+						'id': 'modalLabel',
+					}).text('Customers')).appendTo('.modal-content');
+
+				// MODAL BODY
+
+					$(document.createElement('div')).addClass('modal-body').appendTo('.modal-content');
+					$(document.createElement('p')).text('Are you sure you want to delete this record?').appendTo('.modal-body');
+
+				// MODAL FOOTER
+
+					$(document.createElement('div')).addClass('modal-footer').appendTo('.modal-content');
+					$(document.createElement('button')).attr({
+						'type': 'button',
+						'class': 'btn btn-secondary',
+						'data-dismiss': 'modal'
+					}).append('Close').appendTo('.modal-footer');
+					$(document.createElement('button')).attr({
+						'type': 'button',
+						'class': 'btn btn-primary bg-danger',
+						'onclick': 'deleteCustomer('+id+')'
+					}).append('Delete').appendTo('.modal-footer');
+
+	$('.modal').modal(); // CALL MODAL
+
 }

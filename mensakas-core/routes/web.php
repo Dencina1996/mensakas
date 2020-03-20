@@ -93,3 +93,7 @@ Route::get('api/users/list/search={params}', 'CustomerController@userListFiltere
 Route::get('api/users/{id}', 'CustomerController@userDetails');
 
 Route::get('api/users/{id}/nearby', 'CustomerController@businessesNearBy');
+
+// DELETE
+
+Route::post('/customers/delete/{id}', 'CustomerController@destroy');
