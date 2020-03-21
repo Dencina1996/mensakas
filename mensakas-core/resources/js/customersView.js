@@ -24,54 +24,58 @@ $(document).ready(function() {
 function tableContent(url) {
 
 	$.get(url, function(data) {
-        $.each(data, function(index, val) {
+		if (!data) {
+			alert('hello');
+		} else {
+	        $.each(data, function(index, val) {
+	        	console.log(val);
 
-            // ROW 
+	            // ROW 
 
-                $(document.createElement('tr')).appendTo('table');
+	                $(document.createElement('tr')).appendTo('table');
 
-                // CUSTOMER (ALL DETAILS)
+	                // CUSTOMER (ALL DETAILS)
 
-                    $(document.createElement('td')).appendTo('tr:last-child');
-                    $(document.createElement('button')).attr({
-                        class: 'btn btn-success fa fa-search',
-                        onclick: 'alert("DETAILS")'
-                    }).appendTo('tr:last-child td:last-child');
+	                    $(document.createElement('td')).appendTo('tr:last-child');
+	                    $(document.createElement('button')).attr({
+	                        class: 'btn btn-success fa fa-search',
+	                        onclick: 'alert("DETAILS")'
+	                    }).appendTo('tr:last-child td:last-child');
 
-                // CUSTOMER (NAME)
+	                // CUSTOMER (NAME)
 
-                    $(document.createElement('td')).appendTo('tr:last-child');
-                    $('tr:last-child td:last-child').text(val.first_name+' '+val.last_name);
+	                    $(document.createElement('td')).appendTo('tr:last-child');
+	                    $('tr:last-child td:last-child').text(val.first_name+' '+val.last_name);
 
-                // CUSTOMER (EMAIL)
+	                // CUSTOMER (EMAIL)
 
-                    $(document.createElement('td')).appendTo('tr:last-child');
-                    $('tr:last-child td:last-child').text(val.email);                        
+	                    $(document.createElement('td')).appendTo('tr:last-child');
+	                    $('tr:last-child td:last-child').text(val.email);                        
 
-                // CUSTOMER (PHONE)
+	                // CUSTOMER (PHONE)
 
-                    $(document.createElement('td')).appendTo('tr:last-child');
-                    $('tr:last-child td:last-child').text(val.phone);  
+	                    $(document.createElement('td')).appendTo('tr:last-child');
+	                    $('tr:last-child td:last-child').text(val.phone);  
 
-                // CUSTOMER (ADDRESS)
+	                // CUSTOMER (ADDRESS)
 
-                    $(document.createElement('td')).appendTo('tr:last-child');
-                    $('tr:last-child td:last-child').text(val.street+', '+val.city);  
+	                    $(document.createElement('td')).appendTo('tr:last-child');
+	                    $('tr:last-child td:last-child').text(val.street+', '+val.city);  
 
-                // CUSTOMER (OPTIONS)
+	                // CUSTOMER (OPTIONS)
 
-                    $(document.createElement('td')).appendTo('tr:last-child');
+	                    $(document.createElement('td')).appendTo('tr:last-child');
 
-                    $(document.createElement('button')).attr({
-                        class: 'btn btn-danger',
-                        onclick: 'showModal('+val.id+')'
-                    }).append($(document.createElement('i')).addClass('fa fa-trash')).append(' Delete').appendTo('tr:last-child td:last-child');                   
-                    $(document.createElement('button')).attr({
-                        class: 'btn btn-warning',
-                        onclick: 'alert("EDIT")'
-                    }).append($(document.createElement('i')).addClass('fa fa-pencil')).append(' Edit').appendTo('tr:last-child td:last-child');   
-
-        });
+	                    $(document.createElement('button')).attr({
+	                        class: 'btn btn-danger',
+	                        onclick: 'showModal('+val.id+')'
+	                    }).append($(document.createElement('i')).addClass('fa fa-trash')).append(' Delete').appendTo('tr:last-child td:last-child');                   
+	                    $(document.createElement('button')).attr({
+	                        class: 'btn btn-warning',
+	                        onclick: 'alert("EDIT")'
+	                    }).append($(document.createElement('i')).addClass('fa fa-pencil')).append(' Edit').appendTo('tr:last-child td:last-child');   
+        	});
+	    }
     });
 }
 
