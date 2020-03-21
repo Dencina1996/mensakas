@@ -115,7 +115,7 @@ function imReady() {
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! C:\Users\david\Mensakas_AJAX\mensakas\mensakas-core\resources\js\productsCreate.js */"./resources/js/productsCreate.js");
+module.exports = __webpack_require__(/*! C:\Users\david\mensakas\mensakas-core\resources\js\productsCreate.js */"./resources/js/productsCreate.js");
 
 
 /***/ })

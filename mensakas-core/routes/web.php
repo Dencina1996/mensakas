@@ -84,16 +84,26 @@ Route::get('simulator/restaurants/{business}/order/{order}', 'Simulator\Restaura
 
 Route::patch('simulator/restaurants/{business}/order/{order}', 'Simulator\RestaurantSimulatorController@preparingOrder')->name('simulator.restaurant.preparing');
 
-// API USERS
+// USERS
 
-Route::get('api/users/list', 'CustomerController@usersList');
+	// API USERS
 
-Route::get('api/users/list/search={params}', 'CustomerController@userListFiltered');
+		Route::get('api/users/list', 'CustomerController@usersList');
 
-Route::get('api/users/{id}', 'CustomerController@userDetails');
+		Route::get('api/users/list/search={params}', 'CustomerController@userListFiltered');
 
-Route::get('api/users/{id}/nearby', 'CustomerController@businessesNearBy');
+		Route::get('api/users/{id}', 'CustomerController@userDetails');
 
-// DELETE
+		Route::get('api/users/{id}/nearby', 'CustomerController@businessesNearBy');
 
-Route::post('/customers/delete/{id}', 'CustomerController@destroy');
+	// ADD
+
+		Route::post('/customers/add', 'CustomerController@store');
+
+	// UPDATE
+
+		Route::post('/customers/update/{id}', 'CustomerController@update');
+
+	// DELETE
+
+		Route::post('/customers/delete/{id}', 'CustomerController@destroy');

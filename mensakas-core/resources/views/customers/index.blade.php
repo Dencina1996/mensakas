@@ -35,16 +35,16 @@
         </div>
         <table class="table table-striped table-hover">
             <tr>
-            <td></td>
-            <td><strong>Name</strong></td>
-            <td><strong>Email</strong></td>
-            <td><strong>Phone</strong></td>
-            <td><strong>Address</strong></td>
-            <td colspan="2"> 
-                <form action="{{route('customers.create')}}" method="get">
-                    <button type="submit" value="Add new customer" class="btn btn-success ml-4"><i class="fa fa-plus"></i> Add customer</button>
-                </form>
-            </td>
+                <td></td>
+                <td><strong>Name</strong></td>
+                <td><strong>Email</strong></td>
+                <td><strong>Phone</strong></td>
+                <td><strong>Address</strong></td>
+                <td colspan="2"> 
+                    <button class="btn btn-success ml-4 addButton">
+                        <i class="fa fa-plus"></i> Add customer
+                    </button>
+                </td>
             </tr>
         </table>
     </div>

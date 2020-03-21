@@ -164,7 +164,7 @@ function removeProduct(e) {
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! C:\Users\david\Mensakas_AJAX\mensakas\mensakas-core\resources\js\menuCarrito.js */"./resources/js/menuCarrito.js");
+module.exports = __webpack_require__(/*! C:\Users\david\mensakas\mensakas-core\resources\js\menuCarrito.js */"./resources/js/menuCarrito.js");
 
 
 /***/ })

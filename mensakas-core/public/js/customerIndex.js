@@ -19,9 +19,15 @@ $(document).ready(function() {
 		$('.modal').remove();
 	});
 
+	$('.addButton').click(function(event) {
+		customerModal(null,'add');
+	});
+
 });
 
 function tableContent(url) {
+
+	$('tr[customer_id').remove();
 
 	$.get(url, function(data) {
         $.each(data, function(index, val) {
@@ -105,7 +111,7 @@ function customerModal(id, opt) {
 					.append($(document.createElement('h5')).attr({
 						'class': 'modal-title',
 						'id': 'modalLabel',
-					}).text('User details')).appendTo('.modal-content');
+					}).text('Customer details')).appendTo('.modal-content');
 
 				// MODAL BODY
 
@@ -246,22 +252,82 @@ function customerModal(id, opt) {
 
 	$('.modal').modal(); // CALL MODAL
 
-	$.get('api/users/'+id, function(data) {
-		$('#user_fname').val(data.first_name);
-		$('#user_lname').val(data.last_name);
-		$('#user_email').val(data.email);
-		$('#user_phone').val(data.phone);
-		$('#user_city').val(data.city);
-		$('#user_zipcode').val(data.zip_code);
-		$('#user_address').val(data.street);
-		$('#user_number').val(data.number);
-		$('#user_door').val(data.house_number);
-	});
+	if (opt == 'details' || opt == 'update') { // SEND DATA TO MODAL
+
+		$.get('api/users/'+id, function(data) {
+			$('#user_fname').val(data.first_name);
+			$('#user_lname').val(data.last_name);
+			$('#user_email').val(data.email);
+			$('#user_phone').val(data.phone);
+			$('#user_city').val(data.city);
+			$('#user_zipcode').val(data.zip_code);
+			$('#user_address').val(data.street);
+			$('#user_number').val(data.number);
+			$('#user_door').val(data.house_number);
+		});
+
+	}
 
 	if (opt == 'details') {
 		$('.form-group input').attr('disabled', 'true');
 		$('button:contains("Update")').remove();
 	}	
+
+	if (opt == 'update') {
+		$('#modalLabel').text('Edit customer');
+		$('button:contains("Update")').click(function(event) {
+			$.post('/customers/update/'+id, 
+				{
+					_token: $('input[name="_token"]').val(),
+					first_name: $('#user_fname').val(),
+					last_name: $('#user_lname').val(),
+					email: $('#user_email').val(),
+					phone: $('#user_phone').val(),
+					city: $('#user_city').val(),
+					zip_code: $('#user_zipcode').val(),
+					street: $('#user_address').val(),
+					number: $('#user_number').val(),
+					house_number: $('#user_door').val(),
+				}).done( function() {
+						$('.modal-body').empty();
+						$('button:contains("Update")').remove();
+						$(document.createElement('p')).text('Record changed successfully ✅').appendTo('.modal-body');
+						$('.modal-footer button:contains("Add")').remove();
+						tableContent('/api/users/list');
+				}).fail( function(status) {
+						$('.modal-body p').remove();
+						$('.modal-body').prepend($(document.createElement('p')).text('Record cannot be changed (Error '+status.status+') ❌'));
+				});
+		});
+	}	
+
+	if (opt == 'add') {
+		$('#modalLabel').text('Add customer');
+		$('button:contains("Update")').text('Add').click(function(event) {
+			$.post('/customers/add', 
+				{
+					_token: $('input[name="_token"]').val(),
+					first_name: $('#user_fname').val(),
+					last_name: $('#user_lname').val(),
+					email: $('#user_email').val(),
+					phone: $('#user_phone').val(),
+					city: $('#user_city').val(),
+					zip_code: $('#user_zipcode').val(),
+					street: $('#user_address').val(),
+					number: $('#user_number').val(),
+					house_number: $('#user_door').val(),
+				}).done( function() {
+						$('.modal-body').empty();
+						$(document.createElement('p')).text('Record added successfully ✅').appendTo('.modal-body');
+						$('.modal-footer button:contains("Add")').remove();
+						tableContent('/api/users/list');
+				}).fail( function(status) {
+						$('.modal-body p').remove();
+						$('.modal-body').prepend($(document.createElement('p')).text('Record cannot be added (Error '+status.status+') ❌'));
+				});
+		});
+	}
+
 }
 
 function deleteCustomer(id) {

@@ -57,8 +57,6 @@ class CustomerController extends Controller
         $customerAddress->house_number = $request->house_number;
         $customerAddress->customer_id = $customer->id;
         $customerAddress->save();
-
-        return redirect(route('customers.index'))->with('success', 'Customer created successfully!');
     }
 
     /**
@@ -92,26 +90,22 @@ class CustomerController extends Controller
      * @param  \App\Customer  $customer
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Customer $customer)
+    public function update(Request $request, $id)
     {
-        $customer->first_name = $request->first_name;
-        $customer->last_name = $request->last_name;
-        $customer->email = $request->email;
-        $customer->phone = $request->phone;
-        $customer->save();
+        Customer::where('id', $id)->update([
+            'first_name' => $request->first_name,
+            'last_name' => $request->last_name,
+            'email' => $request->email,
+            'phone' =>  $request->phone,
+        ]);
 
-        $customerAddress = $customer->customerAddresse;
-        $customerAddress->city = $request->city;
-        $customerAddress->zip_code = $request->zip_code;
-        $customerAddress->street = $request->street;
-        $customerAddress->number = $request->number;
-        $customerAddress->house_number = $request->house_number;
-        $customerAddress->save();
-
-        return redirect()->action(
-            'CustomerController@show',
-            ['customer' => $customer->id]
-        )->with('success', 'Customer edited successfully!');
+        CustomerAddress::where('customer_id', $id)->update([
+            'city' => $request->city,
+            'zip_code' => $request->zip_code,
+            'street' => $request->street,
+            'number' => $request->number,
+            'house_number' => $request->house_number,
+        ]);
     }
 
     /**
