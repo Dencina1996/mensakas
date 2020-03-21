@@ -130,7 +130,7 @@ function customerModal(id, opt) {
 							$(document.createElement('input')).attr({
 								'type': 'text',
 								'class': 'form-control',
-								'id': 'user_fname'
+								'id': 'user_fname',
 							}).appendTo('.form-group');
 
 						// LAST NAME INPUT
@@ -304,27 +304,43 @@ function customerModal(id, opt) {
 	if (opt == 'add') {
 		$('#modalLabel').text('Add customer');
 		$('button:contains("Update")').text('Add').click(function(event) {
-			$.post('/customers/add', 
-				{
-					_token: $('input[name="_token"]').val(),
-					first_name: $('#user_fname').val(),
-					last_name: $('#user_lname').val(),
-					email: $('#user_email').val(),
-					phone: $('#user_phone').val(),
-					city: $('#user_city').val(),
-					zip_code: $('#user_zipcode').val(),
-					street: $('#user_address').val(),
-					number: $('#user_number').val(),
-					house_number: $('#user_door').val(),
-				}).done( function() {
-						$('.modal-body').empty();
-						$(document.createElement('p')).text('Record added successfully ✅').appendTo('.modal-body');
-						$('.modal-footer button:contains("Add")').remove();
-						tableContent('/api/users/list');
-				}).fail( function(status) {
-						$('.modal-body p').remove();
-						$('.modal-body').prepend($(document.createElement('p')).text('Record cannot be added (Error '+status.status+') ❌'));
-				});
+			$('.form-group input').each(function(index, el) {
+				$(el).removeClass('is-invalid');
+				if ($.trim($(el).val()) == '') {
+					$(el).addClass('is-invalid');
+				}
+			});
+			if ($('.form-group input.is-invalid').length > 0) {
+				$('.modal-body p').remove();
+				$('.modal-body').prepend($(document.createElement('p')).text('Please fill all the required fields ❌'));
+			} else {
+				$.post('/customers/add', 
+					{
+						_token: $('input[name="_token"]').val(),
+						first_name: $('#user_fname').val(),
+						last_name: $('#user_lname').val(),
+						email: $('#user_email').val(),
+						phone: $('#user_phone').val(),
+						city: $('#user_city').val(),
+						zip_code: $('#user_zipcode').val(),
+						street: $('#user_address').val(),
+						number: $('#user_number').val(),
+						house_number: $('#user_door').val(),
+					}).done( function(msg) {
+						if (msg.success) {
+							$('.modal-body').empty();
+							$(document.createElement('p')).text('Record added successfully ✅').appendTo('.modal-body');
+							$('.modal-footer button:contains("Add")').remove();
+							tableContent('/api/users/list');
+						} else {
+							$('.modal-body p').remove();
+							$('.modal-body').prepend($(document.createElement('p')).text(msg.error));
+						}
+					}).fail( function(status) {
+							$('.modal-body p').remove();
+							$('.modal-body').prepend($(document.createElement('p')).text('Record cannot be added (Error '+status.status+') ❌'));
+					});
+			}
 		});
 	}
 

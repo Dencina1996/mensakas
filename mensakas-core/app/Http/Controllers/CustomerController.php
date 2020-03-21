@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Customer;
 use App\CustomerAddress;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 use DB;
 
 class CustomerController extends Controller
@@ -42,21 +43,39 @@ class CustomerController extends Controller
      */
     public function store(Request $request)
     {
-        $customer = new Customer();
-        $customer->first_name = $request->first_name;
-        $customer->last_name = $request->last_name;
-        $customer->email = $request->email;
-        $customer->phone = $request->phone;
-        $customer->save();
 
-        $customerAddress = new CustomerAddress();
-        $customerAddress->city = $request->city;
-        $customerAddress->zip_code = $request->zip_code;
-        $customerAddress->street = $request->street;
-        $customerAddress->number = $request->number;
-        $customerAddress->house_number = $request->house_number;
-        $customerAddress->customer_id = $customer->id;
-        $customerAddress->save();
+        $validator = Validator::make($request->all(), [
+            'first_name' => 'string|max:45',
+            'last_name' => 'string|max:45',
+            'email' => 'string|max:45',
+            'phone' => 'string|max:45',
+            'city' => 'string|max:45',
+            'zip_code' => 'integer|digits_between:0,11',
+            'street' => 'string|max:45',
+            'number' => 'integer|digits_between:0,11',
+            'house_number' => 'string|max:45',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['error' => 'One or more fields do not match the right type of data ❌']);
+        } else {
+            $customer = new Customer();
+            $customer->first_name = $request->first_name;
+            $customer->last_name = $request->last_name;
+            $customer->email = $request->email;
+            $customer->phone = $request->phone;
+            $customer->save();
+
+            $customerAddress = new CustomerAddress();
+            $customerAddress->city = $request->city;
+            $customerAddress->zip_code = $request->zip_code;
+            $customerAddress->street = $request->street;
+            $customerAddress->number = $request->number;
+            $customerAddress->house_number = $request->house_number;
+            $customerAddress->customer_id = $customer->id;
+            $customerAddress->save();
+            return response()->json(['success' => 'Record added successfully ✅']);
+        }
     }
 
     /**
@@ -116,6 +135,7 @@ class CustomerController extends Controller
      */
     public function destroy($id)
     {
+        CustomerAddress::where('customer_id', '=', $id)->delete();
         Customer::where('id', '=', $id)->delete();
     }
 
