@@ -27,7 +27,7 @@
                     </button>
                     <div class="filter-group">
                         <label>Search</label>
-                        <input type="text" class="form-control" name="search">
+                        <input type="search" class="form-control" name="search">
                     </div>
                     <span class="filter-icon"><i class="fa fa-filter"></i></span>
                 </div>

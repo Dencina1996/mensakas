@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Rider;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
+use DB;
 
 class RiderController extends Controller
 {
@@ -38,15 +40,26 @@ class RiderController extends Controller
      */
     public function store(Request $request)
     {
-        $rider = new Rider();
-        $rider->first_name = $request->first_name;
-        $rider->last_name = $request->last_name;
-        $rider->active = 1;
-        $rider->username = $request->username;
-        $rider->phone = $request->phone;
-        $rider->save();
+        $validator = Validator::make($request->all(), [
+            'first_name' => 'string|max:45',
+            'last_name' => 'string|max:45',
+            'active' => 'integer|between:0,1',
+            'phone' => 'string|max:45',
+            'username' => 'string|max:45',
+        ]);
 
-        return redirect(route('riders.index'))->with('success', 'Rider created successfully!');
+        if ($validator->fails()) {
+            return response()->json(['error' => 'One or more fields do not match the right type of data ❌']);
+        } else {
+            $rider = new Rider();
+            $rider->first_name = $request->first_name;
+            $rider->last_name = $request->last_name;
+            $rider->active = $request->active;
+            $rider->phone = $request->phone;
+            $rider->username = $request->username;
+            $rider->save();
+            return response()->json(['success' => 'Record added successfully ✅']);
+        }
     }
 
     /**
@@ -80,19 +93,16 @@ class RiderController extends Controller
      * @param  \App\Rider  $rider
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Rider $rider)
-    {
-        $rider->first_name = $request->first_name;
-        $rider->last_name = $request->last_name;
-        $rider->active = 1;
-        $rider->username = $request->username;
-        $rider->phone = $request->phone;
-        $rider->save();
 
-        return redirect()->action(
-            'RiderController@show',
-            ['rider' => $rider->id]
-        )->with('success', 'Rider edited successfully!');;
+    public function update(Request $request, $id)
+    {
+        Rider::where('id', $id)->update([
+            'first_name' => $request->first_name,
+            'last_name' => $request->last_name,
+            'phone' =>  $request->phone,
+            'username' => $request->username,
+            'active' => $request->active
+        ]);
     }
 
     /**
@@ -101,9 +111,8 @@ class RiderController extends Controller
      * @param  \App\Rider  $rider
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Rider $rider)
+    public function destroy($id)
     {
-        $rider->delete();
-        return redirect(route('riders.index'))->with('success', 'Rider deleted successfully!');
+        Rider::where('id', '=', $id)->delete();
     }
 }

@@ -1,14 +1,14 @@
 $(document).ready(function() {
 
-    tableContent('/api/users/customers/all');
+    tableContent('/api/users/riders/all/');
 
     $('.btn-primary').click(function(event) {
         var params = $('input[name="search"]').val();
         $('tbody').children().not(':first').remove();
         if (!params) {
-            tableContent('/api/users/customers/all');
+            tableContent('/api/users/riders/all/');
         } else {
-            tableContent('/api/users/customers/search=' + params);
+            tableContent('/api/users/riders/search=' + params);
         }
     });
 
@@ -20,14 +20,14 @@ $(document).ready(function() {
     });
 
     $('.addButton').click(function(event) {
-        customerModal(null, 'add');
+        riderModal(null, 'add');
     });
 
 });
 
 function tableContent(url) {
 
-    $('tr[customer_id').remove();
+    $('tr[rider_id').remove();
 
     $.get(url, function(data) {
         if (data.length == 0) {
@@ -42,37 +42,37 @@ function tableContent(url) {
 
                 // ROW 
 
-                $(document.createElement('tr')).attr('customer_id', val.id).appendTo('table');
+                $(document.createElement('tr')).attr('rider_id', val.id).appendTo('table');
 
-                // CUSTOMER (ALL DETAILS)
+                // RIDER (ALL DETAILS)
 
                 $(document.createElement('td')).appendTo('tr:last-child');
                 $(document.createElement('button')).attr({
                     class: 'btn btn-success fa fa-search',
-                    onclick: 'customerModal(' + val.id + ', "details")'
+                    onclick: 'riderModal(' + val.id + ', "details")'
                 }).appendTo('tr:last-child td:last-child');
 
-                // CUSTOMER (NAME)
+                // RIDER ( FIRST NAME)
 
                 $(document.createElement('td')).appendTo('tr:last-child');
-                $('tr:last-child td:last-child').text(val.first_name + ' ' + val.last_name);
+                $('tr:last-child td:last-child').text(val.first_name);
 
-                // CUSTOMER (EMAIL)
+                // RIDER (LAST NAME)
 
                 $(document.createElement('td')).appendTo('tr:last-child');
-                $('tr:last-child td:last-child').text(val.email);
+                $('tr:last-child td:last-child').text(val.last_name);
 
-                // CUSTOMER (PHONE)
+                // RIDER (USERNAME)
+
+                $(document.createElement('td')).appendTo('tr:last-child');
+                $('tr:last-child td:last-child').text(val.username);
+
+                // RIDER (PHONE)
 
                 $(document.createElement('td')).appendTo('tr:last-child');
                 $('tr:last-child td:last-child').text(val.phone);
 
-                // CUSTOMER (ADDRESS)
-
-                $(document.createElement('td')).appendTo('tr:last-child');
-                $('tr:last-child td:last-child').text(val.street + ', ' + val.city);
-
-                // CUSTOMER (OPTIONS)
+                // RIDER (OPTIONS)
 
                 $(document.createElement('td')).appendTo('tr:last-child');
 
@@ -82,14 +82,14 @@ function tableContent(url) {
                 }).append($(document.createElement('i')).addClass('fa fa-trash')).append(' Delete').appendTo('tr:last-child td:last-child');
                 $(document.createElement('button')).attr({
                     class: 'btn btn-warning',
-                    onclick: 'customerModal(' + val.id + ', "update")'
+                    onclick: 'riderModal(' + val.id + ', "update")'
                 }).append($(document.createElement('i')).addClass('fa fa-pencil')).append(' Edit').appendTo('tr:last-child td:last-child');
             });
         }
     });
 }
 
-function customerModal(id, opt) {
+function riderModal(id, opt) {
 
     // MODAL 
 
@@ -119,7 +119,7 @@ function customerModal(id, opt) {
         .append($(document.createElement('h5')).attr({
             'class': 'modal-title',
             'id': 'modalLabel',
-        }).text('Customer details')).appendTo('.modal-content');
+        }).text('Rider details')).appendTo('.modal-content');
 
     // MODAL BODY
 
@@ -154,17 +154,17 @@ function customerModal(id, opt) {
         'id': 'user_lname'
     }).appendTo('.form-group');
 
-    // EMAIL INPUT
+    // USERNAME INPUT
 
     $(document.createElement('label')).attr({
-        'for': 'user_email',
+        'for': 'user_username',
         'class': 'col-form-label',
-    }).text('Email:').appendTo('.form-group');
+    }).text('Username:').appendTo('.form-group');
 
     $(document.createElement('input')).attr({
-        'type': 'email',
+        'type': 'text',
         'class': 'form-control',
-        'id': 'user_email'
+        'id': 'user_username'
     }).appendTo('.form-group');
 
     // PHONE INPUT
@@ -178,71 +178,6 @@ function customerModal(id, opt) {
         'type': 'text',
         'class': 'form-control',
         'id': 'user_phone'
-    }).appendTo('.form-group');
-
-    // CITY INPUT
-
-    $(document.createElement('label')).attr({
-        'for': 'user_city',
-        'class': 'col-form-label',
-    }).text('City:').appendTo('.form-group');
-
-    $(document.createElement('input')).attr({
-        'type': 'text',
-        'class': 'form-control',
-        'id': 'user_city'
-    }).appendTo('.form-group');
-
-    // ZIP CODE INPUT
-
-    $(document.createElement('label')).attr({
-        'for': 'user_zipcode',
-        'class': 'col-form-label',
-    }).text('Zip Code:').appendTo('.form-group');
-
-    $(document.createElement('input')).attr({
-        'type': 'text',
-        'class': 'form-control',
-        'id': 'user_zipcode'
-    }).appendTo('.form-group');
-
-    // ADDRESS INPUT
-
-    $(document.createElement('label')).attr({
-        'for': 'user_address',
-        'class': 'col-form-label',
-    }).text('Address:').appendTo('.form-group');
-
-    $(document.createElement('input')).attr({
-        'type': 'text',
-        'class': 'form-control',
-        'id': 'user_address'
-    }).appendTo('.form-group');
-
-    // NUMBER INPUT
-
-    $(document.createElement('label')).attr({
-        'for': 'user_number',
-        'class': 'col-form-label',
-    }).text('Number:').appendTo('.form-group');
-
-    $(document.createElement('input')).attr({
-        'type': 'text',
-        'class': 'form-control',
-        'id': 'user_number'
-    }).appendTo('.form-group');
-
-    // DOOR INPUT
-
-    $(document.createElement('label')).attr({
-        'for': 'user_door',
-        'class': 'col-form-label',
-    }).text('Door:').appendTo('.form-group');
-
-    $(document.createElement('input')).attr({
-        'type': 'text',
-        'class': 'form-control',
-        'id': 'user_door'
     }).appendTo('.form-group');
 
     // MODAL FOOTER
@@ -262,54 +197,94 @@ function customerModal(id, opt) {
 
     if (opt == 'details' || opt == 'update') { // SEND DATA TO MODAL
 
-        $.get('/api/users/customers/id=' + id, function(data) {
+        $.get('/api/users/riders/id=' + id, function(data) {
             $('#user_fname').val(data[0].first_name);
             $('#user_lname').val(data[0].last_name);
-            $('#user_email').val(data[0].email);
+            $('#user_username').val(data[0].username);
             $('#user_phone').val(data[0].phone);
-            $('#user_city').val(data[0].city);
-            $('#user_zipcode').val(data[0].zip_code);
-            $('#user_address').val(data[0].street);
-            $('#user_number').val(data[0].number);
-            $('#user_door').val(data[0].house_number);
-        });
-
-    }
-
-    if (opt == 'details') {
-        $('.form-group input').attr('disabled', 'true');
-        $('button:contains("Update")').remove();
-    }
-
-    if (opt == 'update') {
-        $('#modalLabel').text('Edit customer');
-        $('button:contains("Update")').click(function(event) {
-            $.post('/customers/update/' + id, {
-                _token: $('input[name="_token"]').val(),
-                first_name: $('#user_fname').val(),
-                last_name: $('#user_lname').val(),
-                email: $('#user_email').val(),
-                phone: $('#user_phone').val(),
-                city: $('#user_city').val(),
-                zip_code: $('#user_zipcode').val(),
-                street: $('#user_address').val(),
-                number: $('#user_number').val(),
-                house_number: $('#user_door').val(),
-            }).done(function() {
-                $('.modal-body').empty();
+            if (opt == 'details') {
+                $('.form-group input').attr('disabled', 'true');
                 $('button:contains("Update")').remove();
-                $(document.createElement('p')).text('Record changed successfully ✅').appendTo('.modal-body');
-                $('.modal-footer button:contains("Add")').remove();
-                tableContent('/api/users/customers/all');
-            }).fail(function(status) {
-                $('.modal-body p').remove();
-                $('.modal-body').prepend($(document.createElement('p')).text('Record cannot be changed (Error ' + status.status + ') ❌'));
-            });
+                if (data[0].active == '1') {
+                    $(document.createElement('br')).appendTo('.form-group');
+                    $(document.createElement('p')).text('🟢 Active').css({
+                        marginTop: '10px',
+                        textAlign: 'center'
+                    }).appendTo('.form-group');
+                } else {
+                    $(document.createElement('br')).appendTo('.form-group');
+                    $(document.createElement('p')).text('🔴 Inactive').css({
+                        marginTop: '10px',
+                        textAlign: 'center'
+                    }).appendTo('.form-group');
+                }
+                if (data[0].latitude == null) {
+                    $(document.createElement('p')).text('Latitude: -').appendTo('.form-group');
+                    $(document.createElement('p')).text('Longitude: -').appendTo('.form-group');
+                    $(document.createElement('p')).text('Accuracy: -').appendTo('.form-group');
+                    $(document.createElement('p')).text('Speed: -').appendTo('.form-group');
+                } else {
+                    $(document.createElement('p')).text('Latitude: '+data[0].latitude+'º').appendTo('.form-group');
+                    $(document.createElement('p')).text('Longitude: '+data[0].longitude+'º').appendTo('.form-group');
+                    $(document.createElement('p')).text('Accuracy: '+data[0].accuracy).appendTo('.form-group');
+                    $(document.createElement('p')).text('Speed: '+data[0].speed+' km/h').appendTo('.form-group');
+                }    
+            }
+            if (opt == 'update') {
+                $('#modalLabel').text('Edit rider');
+                $(document.createElement('br')).appendTo('.form-group');
+                $(document.createElement('p')).append($(document.createElement('input')).attr({
+                    type: 'radio',
+                    name: 'user_active',
+                    value: 1
+                }).css('verticalAlign', 'middle')).append(' Active 🟢').appendTo($('.form-group'));
+                $(document.createElement('p')).append($(document.createElement('input')).attr({
+                    type: 'radio',
+                    name: 'user_active',
+                    value: 0
+                }).css('verticalAlign', 'middle')).append(' Inactive 🔴').appendTo($('.form-group'));
+                if (data[0].active == 1) {
+                    $('input[type="radio"]').eq(0).attr('checked', 'true');
+                } else {
+                    $('input[type="radio"]').eq(1).attr('checked', 'true');
+                }
+                $('button:contains("Update")').click(function(event) {
+                    $.post('/riders/update/' + id, {
+                        _token: $('input[name="_token"]').val(),
+                        first_name: $('#user_fname').val(),
+                        last_name: $('#user_lname').val(),
+                        username: $('#user_username').val(),
+                        phone: $('#user_phone').val(),
+                        active: $('input[name="user_active"]:checked').val(),
+                    }).done(function() {
+                        $('.modal-body').empty();
+                        $('button:contains("Update")').remove();
+                        $(document.createElement('p')).text('Record changed successfully ✅').appendTo('.modal-body');
+                        $('.modal-footer button:contains("Add")').remove();
+                        tableContent('/api/users/riders/all');
+                    }).fail(function(status) {
+                        $('.modal-body p').remove();
+                        $('.modal-body').prepend($(document.createElement('p')).text('Record cannot be changed (Error ' + status.status + ') ❌'));
+                    });
+                });
+            }
         });
     }
 
+    
     if (opt == 'add') {
-        $('#modalLabel').text('Add customer');
+        $('#modalLabel').text('Add rider');
+        $(document.createElement('br')).appendTo('.form-group');
+        $(document.createElement('p')).append($(document.createElement('input')).attr({
+            type: 'radio',
+            name: 'user_active',
+            value: 1
+        }).css('verticalAlign', 'middle')).append(' Active 🟢').appendTo($('.form-group'));
+        $(document.createElement('p')).append($(document.createElement('input')).attr({
+            type: 'radio',
+            name: 'user_active',
+            value: 0
+        }).css('verticalAlign', 'middle')).append(' Inactive 🔴').appendTo($('.form-group'));
         $('button:contains("Update")').text('Add').click(function(event) {
             $('.form-group input').each(function(index, el) {
                 $(el).removeClass('is-invalid');
@@ -321,23 +296,19 @@ function customerModal(id, opt) {
                 $('.modal-body p').remove();
                 $('.modal-body').prepend($(document.createElement('p')).text('Please fill all the required fields ❌'));
             } else {
-                $.post('/customers/add', {
+                $.post('/riders/add', {
                     _token: $('input[name="_token"]').val(),
                     first_name: $('#user_fname').val(),
                     last_name: $('#user_lname').val(),
-                    email: $('#user_email').val(),
+                    username: $('#user_username').val(),
                     phone: $('#user_phone').val(),
-                    city: $('#user_city').val(),
-                    zip_code: $('#user_zipcode').val(),
-                    street: $('#user_address').val(),
-                    number: $('#user_number').val(),
-                    house_number: $('#user_door').val(),
+                    active: $('input[name="user_active"]:checked').val(),
                 }).done(function(msg) {
                     if (msg.success) {
                         $('.modal-body').empty();
                         $(document.createElement('p')).text('Record added successfully ✅').appendTo('.modal-body');
                         $('.modal-footer button:contains("Add")').remove();
-                        tableContent('/api/users/customers/all');
+                        tableContent('/api/users/riders/all');
                     } else {
                         $('.modal-body p').remove();
                         $('.modal-body').prepend($(document.createElement('p')).text(msg.error));
@@ -352,14 +323,14 @@ function customerModal(id, opt) {
 
 }
 
-function deleteCustomer(id) {
-    $.post('/customers/delete/' + id, {
+function deleteRider(id) {
+    $.post('/riders/delete/' + id, {
             _token: $('input[name="_token"]').val()
         })
         .done(function() {
             $('.modal-body p').text('Record deleted successfully ✅');
             $('.modal-footer button:contains("Delete")').remove();
-            $('tr[customer_id="' + id + '"]').remove();
+            $('tr[rider_id="' + id + '"]').remove();
         })
         .fail(function(status) {
             $('.modal-body p').text('Record cannot be deleted (Error ' + status.status + ') ❌');
@@ -394,7 +365,7 @@ function deleteModal(id) {
         .append($(document.createElement('h5')).attr({
             'class': 'modal-title',
             'id': 'modalLabel',
-        }).text('Customers')).appendTo('.modal-content');
+        }).text('Riders')).appendTo('.modal-content');
 
     // MODAL BODY
 
@@ -412,7 +383,7 @@ function deleteModal(id) {
     $(document.createElement('button')).attr({
         'type': 'button',
         'class': 'btn btn-primary bg-danger',
-        'onclick': 'deleteCustomer(' + id + ')'
+        'onclick': 'deleteRider(' + id + ')'
     }).append('Delete').appendTo('.modal-footer');
 
     $('.modal').modal(); // CALL MODAL

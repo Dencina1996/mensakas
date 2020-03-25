@@ -138,38 +138,4 @@ class CustomerController extends Controller
         CustomerAddress::where('customer_id', '=', $id)->delete();
         Customer::where('id', '=', $id)->delete();
     }
-
-    // API 
-
-    public function usersList()
-    {
-        return Customer::join('customer_address', 'customer_address.customer_id', '=', 'customer.id')->get();
-    }
-
-    public function userListFiltered($params)
-    {
-        return Customer::join('customer_address', 'customer_address.customer_id', '=', 'customer.id')
-        ->where('first_name', 'like', '%'.$params.'%')
-        ->orWhere('last_name', 'like', '%'.$params.'%')
-        ->orWhere('phone', 'like', '%'.$params.'%')
-        ->orWhere('street', 'like', '%'.$params.'%')
-        ->orWhere('city', 'like', '%'.$params.'%')
-        ->get();
-    }
-
-    public function userDetails($id)
-    {
-        return Customer::join('customer_address', 'customer_address.customer_id', '=', 'customer.id')->where('customer.id', '=', $id)->first();
-    }
-
-    public function businessesNearBy($id) {
-        return DB::table('business')
-        ->join('business_address', 'business_address.business_id', '=', 'business.id')
-        ->join('customer_address', 'customer_address.zip_code', '=', 'business_address.zip_code')
-        ->join('customer', 'customer.id', '=', 'customer_address.customer_id')
-        ->where('customer.id', '=', $id)
-        ->select('business.*')
-        ->get()
-        ->toJson();
-    }
 }

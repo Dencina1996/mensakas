@@ -84,26 +84,85 @@ Route::get('simulator/restaurants/{business}/order/{order}', 'Simulator\Restaura
 
 Route::patch('simulator/restaurants/{business}/order/{order}', 'Simulator\RestaurantSimulatorController@preparingOrder')->name('simulator.restaurant.preparing');
 
-// USERS
+// API Users
 
-	// API USERS
+	// Customers
 
-		Route::get('api/users/list', 'CustomerController@usersList');
+		// All Customers
 
-		Route::get('api/users/list/search={params}', 'CustomerController@userListFiltered');
+			Route::get('/api/users/customers/all/', 'Api\Users@getAllCustomers');
 
-		Route::get('api/users/{id}', 'CustomerController@userDetails');
+		// Customer Details
 
-		Route::get('api/users/{id}/nearby', 'CustomerController@businessesNearBy');
+			Route::get('/api/users/customers/id={id}', 'Api\Users@getCustomerDetails');
 
-	// ADD
+		// Search Customer
 
-		Route::post('/customers/add', 'CustomerController@store');
+			Route::get('/api/users/customers/search={params}', 'Api\Users@customerListFiltered');
 
-	// UPDATE
+		// Businesses Near Customer
 
-		Route::post('/customers/update/{id}', 'CustomerController@update');
+			Route::get('/api/users/customers/closeto={id}', 'Api\Users@customerBussinessesNearBy');
 
-	// DELETE
+	// Riders
 
-		Route::post('/customers/delete/{id}', 'CustomerController@destroy');
+		// All Riders
+
+			Route::get('/api/users/riders/all/', 'Api\Users@getAllRiders');
+
+		// Rider Details
+
+			Route::get('/api/users/riders/id={id}', 'Api\Users@getRiderDetails');
+
+		// Search Rider
+
+			Route::get('/api/users/riders/search={params}', 'Api\Users@riderListFiltered');
+
+		// Active Riders
+
+			Route::get('/api/users/riders/active', 'Api\Users@getActiveRiders');
+
+		// Rider Deliveries
+
+			Route::get('/api/users/riders/deliveries/{id}', 'Api\Users@getRiderDeliveries');
+
+			
+
+
+// Users CRUD Ajax
+
+	// Customers
+
+		// ADD
+
+			Route::post('/customers/add', 'CustomerController@store');
+
+		// UPDATE
+
+			Route::post('/customers/update/{id}', 'CustomerController@update');
+
+		// DELETE
+
+			Route::post('/customers/delete/{id}', 'CustomerController@destroy');
+
+		// SEARCH
+
+			Route::get('/api/users/customers/search={params}', 'Api\Users@customerListFiltered');
+
+	// Riders
+
+		// ADD
+
+			Route::post('/riders/add', 'RiderController@store');
+
+		// UPDATE
+
+			Route::post('/riders/update/{id}', 'RiderController@update');
+
+		// DELETE
+
+			Route::post('/riders/delete/{id}', 'RiderController@destroy');
+
+		// SEARCH
+
+			Route::get('/api/users/riders/search={params}', 'Api\Users@riderListFiltered');
