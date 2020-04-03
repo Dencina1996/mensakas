@@ -78,10 +78,10 @@ class BusinessSimulatorController extends \App\Http\Controllers\Controller
         return view('simulators.business.menu')->with(['customer' => $customer, 'business' => $business]);
     }
 
-    public function saveOrder(Request $request, Customer $customer, Business $business)
+    public function saveOrder(Request $request)
     {
 
-        if($request->ajax()){
+        
 
             $comanda = new Comanda();
             $comanda->address_id = $request->customer_address_id;
@@ -109,34 +109,8 @@ class BusinessSimulatorController extends \App\Http\Controllers\Controller
             $order->save();
 
             return response()->json(['orderDoneId' => $orderStatus->id]);
-        } else {
-            $comanda = new Comanda();
-            $comanda->address_id = $customer->customerAddresse->id;
-            $comanda->ticket_json = '{"business": {"name": "restaurante2", "address": "c/123"}, "customer": {"mail": "test@test.com", "address": "C/324"}, "products": [{"product": {"name": "hamburguesa", "price": "10", "extras": [{"product": {"name": "queso", "price": "1"}}, {"product": {"name": "tomate", "price": "1"}}]}}, {"product": {"name": "agua", "price": "1"}}]}';
-            $comanda->save();
-
-            $comandaProduct = new ComandaProduct();
-            $comandaProduct->comanda_id = $comanda->id;
-            $comandaProduct->product_id = $business->products[0]->id;
-            $comandaProduct->quantity = 1;
-            $comandaProduct->save();
-
-            $orderStatus = new OrderStatus();
-            $orderStatus->status_id = 1;
-            $orderStatus->save();
-
-            $payment = new Payment();
-            $payment->amount = floatval($request->totalShopping);
-            $payment->save();
-
-            $order = new Order();
-            $order->order_status_id = $orderStatus->id;
-            $order->payment_id = $payment->id;
-            $order->comanda_id = $comanda->id;
-            $order->save();
-
-            return redirect()->route('simulator.comanda.pay', ['order' => $order]);
-        }
+        
+        
     }
 
     public function pay(Order $order)
