@@ -54,6 +54,15 @@
                 <h5 class="card-title ">SIMULATORS</h5>
             </div>
         </div>
+        <div class="card" onclick="location.href='/simulators'">
+            <a href="/command">
+                <img src="https://image.flaticon.com/icons/svg/1493/1493693.svg" width="200" height="200"
+                    class="card-img-top" alt="...">
+            </a>
+            <div class="card-body mx-auto">
+                <h5 class="card-title ">ORDER (AJAX)</h5>
+            </div>
+        </div>
     </div>
 </div>
 @endsection

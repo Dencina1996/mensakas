@@ -12,7 +12,7 @@
 @endpush
 
 @section('space')
-    @include('layouts.secondNav', ['title' => 'Customers'])
+    @include('layouts.secondNav', ['title' => 'Riders'])
 @endsection
 
 @section('content')

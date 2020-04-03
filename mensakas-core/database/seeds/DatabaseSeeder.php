@@ -11,7 +11,7 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        $this->truncate();
+        $this->truncate(); // DELETE
         $this->call(CustomerSeeder::class);
         $this->call(BusinessSeeder::class);
         $this->call(TranslationSeeder::class);

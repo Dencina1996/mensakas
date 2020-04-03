@@ -166,3 +166,21 @@ Route::patch('simulator/restaurants/{business}/order/{order}', 'Simulator\Restau
 		// SEARCH
 
 			Route::get('/api/users/riders/search={params}', 'Api\Users@riderListFiltered');
+
+// Users Part 2 - Comanda AJAX
+
+	Route::get('/command', function() {
+		return view('simulators.command');
+	});
+
+	// Businesses With Zip
+
+		Route::get('/list/businesses/{zip}', 'Simulator\Business\BusinessSimulatorController@getBusinessesByZip');
+
+	// Menus From Business
+
+		Route::get('/list/products/{id}', 'Simulator\Business\BusinessSimulatorController@getMenus');
+
+	// Update Order Status
+
+		Route::post('/update/order/{id}', 'Simulator\Business\BusinessSimulatorController@payCommand');
