@@ -180,7 +180,7 @@ CREATE TABLE `comanda` (
   PRIMARY KEY (`id`),
   KEY `fk_comanda_address1_idx` (`address_id`),
   CONSTRAINT `comanda_address_id_foreign` FOREIGN KEY (`address_id`) REFERENCES `customer_address` (`id`) ON DELETE SET NULL
-) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
